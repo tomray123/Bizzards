@@ -2,26 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages references to various game components.
+/// </summary>
 public class ReferenceManager : MonoBehaviour
 {
-    public ReferenceManagerData data;
+    public static ReferenceManager Instance { get; private set; }
 
-    // Start is called before the first frame update
-    void Awake()
+    public PlayerData playerData;
+
+    private void Awake()
     {
-        data = new ReferenceManagerData();
-        FetchData();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+
+        FetchPlayerData();
     }
 
-    private void FetchData()
+    private void FetchPlayerData()
     {
-        data.joyStick = FindFirstObjectByType<FloatingJoystick>();
-        data.player = FindFirstObjectByType<PlayerMovementController>();
+        playerData.joyStick = FindObjectOfType<FloatingJoystick>();
+        playerData.playerMovementController = FindObjectOfType<PlayerMovementController>();
+        playerData.heroManager = FindObjectOfType<HeroManager>();
     }
 }
 
-public struct ReferenceManagerData
+[System.Serializable]
+public class PlayerData
 {
     public FloatingJoystick joyStick;
-    public PlayerMovementController player;
+    public PlayerMovementController playerMovementController;
+    public HeroManager heroManager;
 }
