@@ -10,6 +10,7 @@ public class ReferenceManager : MonoBehaviour
     public static ReferenceManager Instance { get; private set; }
 
     public PlayerData playerData;
+    public List<EnemyManager> enemies = new List<EnemyManager>();
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class ReferenceManager : MonoBehaviour
         }
 
         FetchPlayerData();
+        FetchEnemies();
     }
 
     private void FetchPlayerData()
@@ -31,6 +33,12 @@ public class ReferenceManager : MonoBehaviour
         playerData.joyStick = FindObjectOfType<FloatingJoystick>();
         playerData.playerMovementController = FindObjectOfType<PlayerMovementController>();
         playerData.heroManager = FindObjectOfType<HeroManager>();
+    }
+
+    private void FetchEnemies()
+    {
+        var enemyManagers = FindObjectsOfType<EnemyManager>();
+        enemies.AddRange(enemyManagers);
     }
 }
 

@@ -14,16 +14,6 @@ public class HeroManager : MonoBehaviour
         // Initialize controllers
         HeroStatsController = new HeroStatsController();
         HeroHealthController = new HeroHealthController();
-    }
-
-    private void Start()
-    {
-        // Fetch the reference manager instance
-        var referenceManager = ReferenceManager.Instance;
-        if (referenceManager != null)
-        {
-            referenceManager.playerData.heroManager = this;
-        }
 
         // Initialize hero stats and health
         if (initialHeroStats != null)
@@ -31,5 +21,10 @@ public class HeroManager : MonoBehaviour
             HeroStatsController.InitializeHero(initialHeroStats);
             HeroHealthController.SetInitialHealth(initialHeroStats.Health);
         }
+    }
+
+    private void Start()
+    {
+        
     }
 }
