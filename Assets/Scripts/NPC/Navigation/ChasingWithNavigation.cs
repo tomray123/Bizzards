@@ -60,6 +60,7 @@ public class ChasingWithNavigation : ChasingMethod
     {
         target = null;
         isChasing = false;
+        navMeshAgent.destination = transform.position;
     }
 
     public override float GetDistanceToTarget()

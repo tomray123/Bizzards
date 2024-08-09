@@ -55,6 +55,7 @@ public class EnemyChaseState : EnemyState
             {
                 EnemyStatesData attackStateData = new EnemyStatesData();
                 attackStateData.target = target;
+                chasingMethod.StopChase();
                 statesManager.SwitchState(statesManager.attackState, attackStateData);
                 return;
             }
