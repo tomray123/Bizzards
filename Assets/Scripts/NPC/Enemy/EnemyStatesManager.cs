@@ -10,22 +10,24 @@ public class EnemyStatesManager : MonoBehaviour
     public float returnToHomeMaxDistance = 15f;
     // Time to wait after swithing from chase to patrolling.
     public float returnToHomeTimeout = 2f;
-    [HideInInspector]
-    public EnemyState patrolState = new EnemyPatrolState();
-    [HideInInspector]
-    public EnemyState chaseState = new EnemyChaseState();
-    [HideInInspector]
-    public EnemyState idleState = new EnemyIdleState();
-    [HideInInspector]
-    public EnemyState attackState = new EnemyAttackState();
-    [HideInInspector]
-    public EnemyState specialState = new EnemySpecialState();
-    [HideInInspector]
-    public EnemyState deathState = new EnemyDeathState();
+
+    [HideInInspector] public EnemyState patrolState = new EnemyPatrolState();
+    [HideInInspector] public EnemyState chaseState = new EnemyChaseState();
+    [HideInInspector] public EnemyState idleState = new EnemyIdleState();
+    [HideInInspector] public EnemyState attackState = new EnemyAttackState();
+    [HideInInspector] public EnemyState specialState = new EnemySpecialState();
+    [HideInInspector] public EnemyState deathState = new EnemyDeathState();
+
     private EnemyState currentState;
+
+    // Reference to EnemyManager
+    public EnemyManager EnemyManager { get; private set; }
 
     private void Awake()
     {
+        // Initialize the EnemyManager reference
+        EnemyManager = GetComponent<EnemyManager>();
+
         currentState = patrolState;
         patrolState.OnAwake(this);
         chaseState.OnAwake(this);

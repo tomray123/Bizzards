@@ -25,6 +25,7 @@ public class HeroHealthController
     public void TakeDamage(float damage)
     {
         health -= damage;
+        Debug.Log("Got Hit.");
         if (health <= 0)
         {
             Die();
