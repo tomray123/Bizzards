@@ -16,12 +16,12 @@ public class EnemySpecialState : EnemyState
 
     public override void OnStateEnter(EnemyStatesManager statesManager, EnemyStatesData stateData)
     {
-
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isSpecial", true);
     }
 
     public override void OnStateExit(EnemyStatesManager statesManager)
     {
-
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isSpecial", false);
     }
 
     public override void OnUpdate(EnemyStatesManager statesManager)

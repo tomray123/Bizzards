@@ -6,7 +6,7 @@ public interface IAttack
     /// <summary>
     /// Executes the attack.
     /// </summary>
-    void ExecuteAttack();
+    void ExecuteAttack(float attackAnimationLength);
 
     /// <summary>
     /// Sets the damage for the attack.

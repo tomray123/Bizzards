@@ -14,16 +14,19 @@ public class PatrollingSpecificPoints : PatrollingMethod
     // Script recalculates Path 1 time per recalculatePathFrequency
     [SerializeField]
     private float recalculatePathFrequency = 0.5f;
+    private EnemyStatesManager statesManager; // Reference to the states manager
 
     private NavMeshAgent navMeshAgent;
     private Vector3 currentTarget;
     private int currentTargetIndex;
     private bool canWalk = true;
     private float recalculateTimer;
+    private IEnumerator takeBreakCoroutine = null;
 
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        statesManager = GetComponent<EnemyStatesManager>(); // Get reference to EnemyStatesManager
         currentTargetIndex = 0;
         recalculateTimer = 0f;
         currentTarget = patrolPoints[currentTargetIndex].position;
@@ -50,7 +53,8 @@ public class PatrollingSpecificPoints : PatrollingMethod
                 {
                     if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
                     {
-                        StartCoroutine(TakeBreak());
+                        takeBreakCoroutine = TakeBreak();
+                        StartCoroutine(takeBreakCoroutine);
                     }
                 }
             }
@@ -61,8 +65,12 @@ public class PatrollingSpecificPoints : PatrollingMethod
     private IEnumerator TakeBreak()
     {
         canWalk = false;
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isPatrol", false);
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isIdle", true);
         yield return new WaitForSeconds(breakTime);
         canWalk = true;
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isIdle", false);
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isPatrol", true);
         ChangeNextPoint();
     }
 
@@ -102,5 +110,13 @@ public class PatrollingSpecificPoints : PatrollingMethod
         //REMOVE DEBUG
         GameObject debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         debugSphere.transform.position = patrollingZoneCenter;
+    }
+
+    public override void Stop(){
+        if (takeBreakCoroutine!=null)
+        {
+            StopCoroutine(takeBreakCoroutine);
+            canWalk = true;
+        }
     }
 }

@@ -32,17 +32,20 @@ public class EnemyPatrolState : EnemyState
             pauseDetectiontimer.Start(returnToHomeTimeout);
         }
         patrollingMethod.enabled = true;
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isPatrol", true);
     }
 
     public override void OnStateExit(EnemyStatesManager statesManager)
     {
         pauseDetectiontimer.Stop();
+        patrollingMethod.Stop();
         patrollingMethod.enabled = false;
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isPatrol", false);
     }
 
     public override void OnUpdate(EnemyStatesManager statesManager)
     {
-
+        Debug.Log("Patrolling");
     }
 
     public override void OnTriggerEnter(EnemyStatesManager statesManager, Collider other)

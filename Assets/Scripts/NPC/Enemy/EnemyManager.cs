@@ -7,11 +7,14 @@ public class AttackData
 {
     public AttackStats attackStats;
     public Collider hitboxCollider;
+    public string attackTrigger; // Название триггера атаки
 }
 
 /// <summary>
 /// Manages enemy initialization and handles integration with ReferenceManager.
 /// </summary>
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))]
 public class EnemyManager : MonoBehaviour
 {
     [SerializeField] private EnemyStats initialEnemyStats;
@@ -25,17 +28,23 @@ public class EnemyManager : MonoBehaviour
     public EnemyStatsController EnemyStatsController { get; private set; }
     public EnemyHealthController EnemyHealthController { get; private set; }
     public EnemyAttackController EnemyAttackController { get; private set; }
+    public EnemyAnimationController EnemyAnimationController { get; private set; } // Новый контроллер анимаций
     private NavMeshAgent navMeshAgent;
+    private Animator enemyAnimator;
 
     private void Awake()
     {
         // Initialize NavMeshAgent
         navMeshAgent = GetComponent<NavMeshAgent>();
 
-        // Initialize controllers with NavMeshAgent
+        // Initialize Animator
+        enemyAnimator = GetComponent<Animator>();
+
+        // Initialize controllers
         EnemyStatsController = new EnemyStatsController(navMeshAgent);
         EnemyHealthController = new EnemyHealthController();
         EnemyAttackController = new EnemyAttackController();
+        EnemyAnimationController = new EnemyAnimationController(enemyAnimator); // Инициализация контроллера анимаций
 
         // Initialize enemy stats and health
         if (initialEnemyStats != null)
@@ -59,17 +68,24 @@ public class EnemyManager : MonoBehaviour
                 var meleeAttack = attackData.hitboxCollider.gameObject.AddComponent<MeleeAttack>();
                 meleeAttack.Initialize(attackData.attackStats, attackData.hitboxCollider);
                 EnemyAttackController.AddAttack(meleeAttack);
+
+                // Add the attack trigger to the animation controller
+                EnemyAnimationController.SetTrigger(attackData.attackTrigger);
+            }
+            else
+            {
+                Debug.LogError("Can't Find any attackData or hitbox for attack on enemy " + gameObject.name);
             }
         }
     }
 
-    private void Start()
+    public void ExecuteAttack(string attackTrigger)
     {
-
-    }
-
-    public void ExecuteAttack()
-    {
-        EnemyAttackController.ExecuteAttack();
+        // Trigger the attack animation
+        EnemyAnimationController.SetTrigger(attackTrigger);
+        if (enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) {
+            float attackAnimationLength = enemyAnimator.GetCurrentAnimatorStateInfo(0).length;
+            EnemyAttackController.ExecuteAttack(attackAnimationLength);
+        }
     }
 }

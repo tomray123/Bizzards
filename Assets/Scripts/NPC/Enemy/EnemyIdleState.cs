@@ -16,12 +16,12 @@ public class EnemyIdleState : EnemyState
 
     public override void OnStateEnter(EnemyStatesManager statesManager, EnemyStatesData stateData)
     {
-
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isIdle", true);
     }
 
     public override void OnStateExit(EnemyStatesManager statesManager)
     {
-
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isIdle", false);
     }
 
     public override void OnUpdate(EnemyStatesManager statesManager)

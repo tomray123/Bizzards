@@ -85,7 +85,18 @@ public class EnemyStatesManager : MonoBehaviour
     public void SwitchState(EnemyState newState, EnemyStatesData stateData)
     {
         currentState.OnStateExit(this);
+        ClearAnimations();
+        newState.OnStateEnter(this, stateData);
         currentState = newState;
-        currentState.OnStateEnter(this, stateData);
     }
+
+    private void ClearAnimations()
+    {
+        EnemyManager.EnemyAnimationController.SetBool("isPatrol", false);
+        EnemyManager.EnemyAnimationController.SetBool("isChase", false);
+        EnemyManager.EnemyAnimationController.SetBool("isIdle", false);
+        EnemyManager.EnemyAnimationController.SetBool("isSpecial", false);
+        EnemyManager.EnemyAnimationController.SetBool("isDeath", false);
+    }
+
 }

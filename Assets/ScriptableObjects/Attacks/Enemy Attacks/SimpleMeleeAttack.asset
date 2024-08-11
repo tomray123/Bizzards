@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 0
   damagePerSecond: 10
-  range: 1
+  range: 2
   activeTime: 1
   castTime: 0
   cooldownTime: 2

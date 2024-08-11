@@ -22,6 +22,7 @@ public class EnemyChaseState : EnemyState
 
     public override void OnStateEnter(EnemyStatesManager statesManager, EnemyStatesData stateData)
     {
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isChase", true);
         chasingMethod.enabled = true;
         homePosition = stateData.initialPosition;
         target = stateData.target;
@@ -37,11 +38,13 @@ public class EnemyChaseState : EnemyState
 
     public override void OnStateExit(EnemyStatesManager statesManager)
     {
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isChase", false);
         chasingMethod.enabled = false;
     }
 
     public override void OnUpdate(EnemyStatesManager statesManager)
     {
+        Debug.Log("Chasing");
         if (target != null)
         {
             // Calculate distance to the target

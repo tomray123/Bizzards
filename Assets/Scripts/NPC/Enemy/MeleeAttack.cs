@@ -14,6 +14,7 @@ public class MeleeAttack : MonoBehaviour, IAttack
     private Collider hitbox;
     private bool isAttacking;
     private float lastAttackTime;
+    private float attackAnimationLength;
 
     /// <summary>
     /// Initializes the melee attack with attack stats and corresponding hitbox collider.
@@ -61,12 +62,14 @@ public class MeleeAttack : MonoBehaviour, IAttack
     /// <summary>
     /// Executes the melee attack.
     /// </summary>
-    public void ExecuteAttack()
+    public void ExecuteAttack(float attackAnimationLength)
+
     {
         if (!CanAttack() || isAttacking) return;
-
         isAttacking = true;
         lastAttackTime = Time.time;  // Record the time when the attack starts
+        this.attackAnimationLength = attackAnimationLength;
+        StartCoroutine(EnableHitboxRoutine());
         StartCoroutine(AttackRoutine());
     }
 
@@ -75,14 +78,18 @@ public class MeleeAttack : MonoBehaviour, IAttack
         // Cast time before the attack
         yield return new WaitForSeconds(castTime);
 
-        // Enable hitbox to detect collision with player
-        hitbox.enabled = true;
-        yield return new WaitForSeconds(activeTime);
-        hitbox.enabled = false;
-
         // Cooldown time after the attack
         yield return new WaitForSeconds(cooldownTime);
         isAttacking = false;
+    }
+
+    // Enable hitbox when animation is playing
+    private IEnumerator EnableHitboxRoutine()
+    {
+        // Enable hitbox to detect collision with player
+        hitbox.enabled = true;
+        yield return new WaitForSeconds(attackAnimationLength);
+        hitbox.enabled = false;
     }
 
     private void OnTriggerEnter(Collider other)

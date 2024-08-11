@@ -16,12 +16,12 @@ public class EnemyDeathState : EnemyState
 
     public override void OnStateEnter(EnemyStatesManager statesManager, EnemyStatesData stateData)
     {
-
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isDeath", true);
     }
 
     public override void OnStateExit(EnemyStatesManager statesManager)
     {
-
+        statesManager.EnemyManager.EnemyAnimationController.SetBool("isDeath", false);
     }
 
     public override void OnUpdate(EnemyStatesManager statesManager)

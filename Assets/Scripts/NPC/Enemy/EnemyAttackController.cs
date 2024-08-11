@@ -25,9 +25,9 @@ public class EnemyAttackController
     /// <summary>
     /// Executes the current attack.
     /// </summary>
-    public void ExecuteAttack()
+    public void ExecuteAttack(float attackAnimationLength)
     {
-        currentAttack?.ExecuteAttack();
+        currentAttack?.ExecuteAttack(attackAnimationLength);
     }
 
     /// <summary>

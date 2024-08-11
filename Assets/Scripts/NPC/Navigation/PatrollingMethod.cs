@@ -8,4 +8,6 @@ public abstract class PatrollingMethod : MonoBehaviour
     protected Vector3 patrollingZoneCenter;
     // Returns center of enemy patrolling zone
     public abstract Vector3 GetPatrollingZoneCenter();
+    // Stop coroutine when patroling
+    public abstract void Stop();
 }
